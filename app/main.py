@@ -24,6 +24,13 @@ my_posts = [
 ]
 
 
+def raise_404_not_found(id):
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"post with ID {id} does not exist.",
+    )
+
+
 def find_post(id):
     for p in my_posts:
         if p["id"] == id:
@@ -68,10 +75,7 @@ def get_post(
 ):
     post = find_post(int(id))
     if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with ID {id} does not exist.",
-        )
+        raise_404_not_found(id)
 
     return {"post_detail": post}
 
@@ -80,10 +84,7 @@ def get_post(
 def delete_post(id: int):
     index = find_index_post(id)
     if index == None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with ID {id} does not exist.",
-        )
+        raise_404_not_found(id)
     my_posts.pop(index)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -93,10 +94,7 @@ def delete_post(id: int):
 def update_post(id: int, post: Post):
     index = find_index_post(id)
     if index == None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with ID {id} does not exist.",
-        )
+        raise_404_not_found(id)
 
     post_dict = post.dict()
     post_dict["id"] = id
