@@ -39,7 +39,7 @@ def find_index_post(id):
 """
 Be careful when you create new paths, and check the order in which they're created, for example:
 
-/posts/{id} being created before /posts/latests means that when we want to call "/posts/latest", "latests" will be used as a parameter for the first path, not the second, which leads to us never being able to call "/posts/latest".
+/posts/{id} being created before /posts/latests means that when we want to call "/posts/latest", "latest" will be used as a parameter for the first path, not the second, which leads to us never being able to call "/posts/latest".
 """
 
 
@@ -58,31 +58,26 @@ def create_post(post: Post):
     post_dict = post.dict()
     post_dict["id"] = randrange(0, 1000000)
     my_posts.append(post_dict)
+
     return {"data": post_dict}
 
 
-# {id} is a path parameter
 @app.get("/posts/{id}")
 def get_post(
     id: int,
-):  # "id: int" asks FastAPI to make sure the value passed is an integer.
+):
     post = find_post(int(id))
     if not post:
         raise HTTPException(
-            status.HTTP_404_NOT_FOUND, {"message": f"post with id: {id} was not found"}
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"post with id {id} does not exist.",
         )
-        # Keeping the commented code to see how not to do it:
-        #
-        # response.status_code = status.HTTP_404_NOT_FOUND
-        # return {"message": f"post with id: {id} was not found"}
+
     return {"post_detail": post}
 
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
-    # deleting post
-    # find the index in the array that has required ID
-    # my_posts.pop(index)
     index = find_index_post(id)
     if index == None:
         raise HTTPException(
@@ -106,4 +101,5 @@ def update_post(id: int, post: Post):
     post_dict = post.dict()
     post_dict["id"] = id
     my_posts[index] = post_dict
+
     return {"data": post_dict}
