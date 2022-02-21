@@ -70,7 +70,7 @@ def get_post(
     if not post:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with id {id} does not exist.",
+            detail=f"post with ID {id} does not exist.",
         )
 
     return {"post_detail": post}
@@ -82,7 +82,7 @@ def delete_post(id: int):
     if index == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with id {id} does not exist.",
+            detail=f"post with ID {id} does not exist.",
         )
     my_posts.pop(index)
 
@@ -95,7 +95,7 @@ def update_post(id: int, post: Post):
     if index == None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"post with id {id} does not exist.",
+            detail=f"post with ID {id} does not exist.",
         )
 
     post_dict = post.dict()
