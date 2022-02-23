@@ -1,11 +1,5 @@
-import enum
-from os import stat
-from typing import Optional
-
 from fastapi import FastAPI, Response, status, HTTPException
-from fastapi.param_functions import Body
 from pydantic import BaseModel
-from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
@@ -17,7 +11,6 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-    rating: Optional[int] = None
 
 
 while True:
@@ -37,29 +30,12 @@ while True:
         print(f"Error: {error}")
         time.sleep(3)
 
-    my_posts = [
-        {"title": "title of post 1", "content": "content of post 1", "id": 1},
-        {"title": "favorite foods", "content": "I like pizza", "id": 2},
-    ]
-
 
 def raise_404_not_found(id):
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"post with ID {id} does not exist.",
     )
-
-
-def find_post(id):
-    for p in my_posts:
-        if p["id"] == id:
-            return p
-
-
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p["id"] == id:
-            return i
 
 
 """
