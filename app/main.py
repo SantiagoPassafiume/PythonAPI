@@ -123,12 +123,17 @@ def delete_post(id: int):
 
 @app.put("/posts/{id}")
 def update_post(id: int, post: Post):
-    index = find_index_post(id)
-    if index == None:
+
+    cursor.execute(
+        """UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING*;""",
+        (post.title, post.content, post.published, str(id)),
+    )
+
+    updated_post = cursor.fetchone()
+
+    conn.commit()
+
+    if updated_post == None:
         raise_404_not_found(id)
 
-    post_dict = post.dict()
-    post_dict["id"] = id
-    my_posts[index] = post_dict
-
-    return {"data": post_dict}
+    return {"data": updated_post}
