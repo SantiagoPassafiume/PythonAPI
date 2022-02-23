@@ -99,7 +99,8 @@ def create_post(post: Post):
 def get_post(
     id: int,
 ):
-    post = find_post(int(id))
+    cursor.execute("""SELECT * FROM posts WHERE id = %s;""", str(id))
+    post = cursor.fetchone()
     if not post:
         raise_404_not_found(id)
 
