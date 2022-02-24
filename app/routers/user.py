@@ -9,7 +9,7 @@ Be careful when you create new paths, and check the order in which they're creat
 /posts/{id} being created before /posts/latests means that when we want to call "/posts/latest", "latest" will be used as a parameter for the first path, not the second, which leads to us never being able to call "/posts/latest".
 """
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
