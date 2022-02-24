@@ -87,11 +87,10 @@ def create_post(post: Post, db: Session = Depends(get_db)):
 
 
 @app.get("/posts/{id}")
-def get_post(
-    id: int,
-):
-    cursor.execute("""SELECT * FROM posts WHERE id = %s;""", str(id))
-    post = cursor.fetchone()
+def get_post(id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).filter(models.Post.id == id).first()
+    # cursor.execute("""SELECT * FROM posts WHERE id = %s;""", str(id))
+    # post = cursor.fetchone()
     if not post:
         raise_404_not_found(id)
 
