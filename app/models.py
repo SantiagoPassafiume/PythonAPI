@@ -1,7 +1,6 @@
-from tokenize import String
-from xmlrpc.client import Boolean
-from .database import Base
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.sql.expression import null
+from .database import Base
 
 
 class Post(Base):

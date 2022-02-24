@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from pydantic import BaseModel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from sqlalchemy.orm import Session
 from . import models
 from .database import SessionLocal, engine
 
@@ -60,6 +61,11 @@ Be careful when you create new paths, and check the order in which they're creat
 @app.get("/")
 def root():
     return {"message": "Santiago's API"}
+
+
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+    return {"status": "success"}
 
 
 @app.get("/posts")
