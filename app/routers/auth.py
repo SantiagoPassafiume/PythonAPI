@@ -20,12 +20,12 @@ def login(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+            status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials"
         )
 
     if not utils.verify(user_credentials.password, user.password):
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials"
+            status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials"
         )
 
     # In here I could put the role and everything else I want inside the dictionary, but this will do for now.
