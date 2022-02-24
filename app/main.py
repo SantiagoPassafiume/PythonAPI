@@ -1,8 +1,5 @@
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from pydantic import BaseModel
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
 from sqlalchemy.orm import Session
 from . import models
 from .database import engine, get_db
@@ -16,24 +13,6 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-
-
-while True:
-    try:
-        conn = psycopg2.connect(
-            host="localhost",
-            database="fastapi",
-            user="postgres",
-            password="santiago",
-            cursor_factory=RealDictCursor,
-        )
-        cursor = conn.cursor()
-        print("Database connection was successful.")
-        break
-    except Exception as error:
-        print("Connecting to database failed.")
-        print(f"Error: {error}")
-        time.sleep(3)
 
 
 def raise_404_not_found(id):
