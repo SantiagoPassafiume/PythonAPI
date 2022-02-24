@@ -44,8 +44,7 @@ def test_posts(db: Session = Depends(get_db)):
 @app.get("/posts")
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
-    # cursor.execute("""SELECT * FROM posts;""")
-    # posts = cursor.fetchall()
+
     return {"data": posts}
 
 
@@ -55,12 +54,6 @@ def create_post(post: Post, db: Session = Depends(get_db)):
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
-    # cursor.execute(
-    #     """INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *""",
-    #     (post.title, post.content, post.published),
-    # )
-    # new_post = cursor.fetchone()
-    # conn.commit()
 
     return {"data": new_post}
 
@@ -68,8 +61,7 @@ def create_post(post: Post, db: Session = Depends(get_db)):
 @app.get("/posts/{id}")
 def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
-    # cursor.execute("""SELECT * FROM posts WHERE id = %s;""", str(id))
-    # post = cursor.fetchone()
+
     if not post:
         raise_404_not_found(id)
 
@@ -79,9 +71,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == id)
-    # cursor.execute("""DELETE FROM posts WHERE id = %s RETURNING *;""", str(id))
-    # deleted_post = cursor.fetchone()
-    # conn.commit()
+
     if post.first() == None:
         raise_404_not_found(id)
 
@@ -95,12 +85,6 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
-    # cursor.execute(
-    #     """UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING*;""",
-    #     (post.title, post.content, post.published, str(id)),
-    # )
-    # updated_post = cursor.fetchone()
-    # conn.commit()
 
     if post == None:
         raise_404_not_found(id)
