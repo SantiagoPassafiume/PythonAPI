@@ -34,7 +34,7 @@ def get_posts(db: Session = Depends(get_db)):
     return posts
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     new_post = models.Post(**post.dict())
     db.add(new_post)
