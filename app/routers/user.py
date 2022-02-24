@@ -1,8 +1,7 @@
-from typing import List
-from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from .. import models, schemas, utils
-from ..database import engine, get_db
+from ..database import get_db
 
 """
 Be careful when you create new paths, and check the order in which they're created, for example:
